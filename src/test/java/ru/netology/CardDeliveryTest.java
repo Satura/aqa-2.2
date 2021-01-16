@@ -51,6 +51,10 @@ public class CardDeliveryTest {
     @Test
     void shouldTestEmptyCity() {
         $("[data-test-id = 'city'] input").setValue("");
+        $("[data-test-id = 'date'] input").setValue(formater.format(date.getTime()));
+        $("[data-test-id = 'name'] input").setValue("Петров Вася");
+        $("[data-test-id = 'phone'] input").setValue("+79567891245");
+        $("[data-test-id = 'agreement'] .checkbox__box").click();
         $(".button__content").click();
         $("[data-test-id = 'city'] .input__sub").shouldHave(Condition.exactText("Поле обязательно для заполнения"));
     }
@@ -58,6 +62,10 @@ public class CardDeliveryTest {
     @Test
     void shouldTestWrongCity() {
         $("[data-test-id = 'city'] input").setValue("Кань");
+        $("[data-test-id = 'date'] input").setValue(formater.format(date.getTime()));
+        $("[data-test-id = 'name'] input").setValue("Петров Вася");
+        $("[data-test-id = 'phone'] input").setValue("+79567891245");
+        $("[data-test-id = 'agreement'] .checkbox__box").click();
         $(".button__content").click();
         $("[data-test-id = 'city'] .input__sub").shouldHave(Condition.exactText("Доставка в выбранный город недоступна"));
     }
@@ -66,6 +74,9 @@ public class CardDeliveryTest {
     void shouldTestEmptyDate() {
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue("");
+        $("[data-test-id = 'name'] input").setValue("Петров Вася");
+        $("[data-test-id = 'phone'] input").setValue("+79567891245");
+        $("[data-test-id = 'agreement'] .checkbox__box").click();
         $(".button__content").click();
         $("[data-test-id = 'date'] .input__sub").shouldHave(Condition.exactText("Неверно введена дата"));
     }
@@ -74,6 +85,9 @@ public class CardDeliveryTest {
     void shouldTestWrongDate() {
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue(formater.format(today.getTime()));
+        $("[data-test-id = 'name'] input").setValue("Петров Вася");
+        $("[data-test-id = 'phone'] input").setValue("+79567891245");
+        $("[data-test-id = 'agreement'] .checkbox__box").click();
         $(".button__content").click();
         $("[data-test-id = 'date'] .input__sub").shouldHave(Condition.exactText("Заказ на выбранную дату невозможен"));
     }
@@ -82,6 +96,9 @@ public class CardDeliveryTest {
     void shouldTestNonexistentDate() {
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue("45.00.2021");
+        $("[data-test-id = 'name'] input").setValue("Петров Вася");
+        $("[data-test-id = 'phone'] input").setValue("+79567891245");
+        $("[data-test-id = 'agreement'] .checkbox__box").click();
         $(".button__content").click();
         $("[data-test-id = 'date'] .input__sub").shouldHave(Condition.exactText("Неверно введена дата"));
     }
@@ -91,6 +108,8 @@ public class CardDeliveryTest {
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue(formater.format(date.getTime()));
         $("[data-test-id = 'name'] input").setValue("");
+        $("[data-test-id = 'phone'] input").setValue("+79567891245");
+        $("[data-test-id = 'agreement'] .checkbox__box").click();
         $(".button__content").click();
         $("[data-test-id = 'name'] .input__sub").shouldHave(Condition.exactText("Поле обязательно для заполнения"));
     }
@@ -100,6 +119,8 @@ public class CardDeliveryTest {
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue(formater.format(date.getTime()));
         $("[data-test-id = 'name'] input").setValue("Pertov Petr");
+        $("[data-test-id = 'phone'] input").setValue("+79567891245");
+        $("[data-test-id = 'agreement'] .checkbox__box").click();
         $(".button__content").click();
         $("[data-test-id = 'name'] .input__sub").shouldHave(Condition.exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
     }
@@ -110,6 +131,7 @@ public class CardDeliveryTest {
         $("[data-test-id = 'date'] input").setValue(formater.format(date.getTime()));
         $("[data-test-id = 'name'] input").setValue("Петров Олег");
         $("[data-test-id = 'phone'] input").setValue("");
+        $("[data-test-id = 'agreement'] .checkbox__box").click();
         $(".button__content").click();
         $("[data-test-id = 'phone'] .input__sub").shouldHave(Condition.exactText("Поле обязательно для заполнения"));
     }
@@ -120,6 +142,7 @@ public class CardDeliveryTest {
         $("[data-test-id = 'date'] input").setValue(formater.format(date.getTime()));
         $("[data-test-id = 'name'] input").setValue("Петров Олег");
         $("[data-test-id = 'phone'] input").setValue("91245");
+        $("[data-test-id = 'agreement'] .checkbox__box").click();
         $(".button__content").click();
         $("[data-test-id = 'phone'] .input__sub").shouldHave(Condition.exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
     }
