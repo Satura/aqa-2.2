@@ -3,9 +3,11 @@ package ru.netology;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -16,9 +18,10 @@ public class CardDeliveryTest {
     private static GregorianCalendar today;
     private static GregorianCalendar date;
     private static SimpleDateFormat formater;
+    private static LocalDate date1;
 
     @BeforeAll
-    static void setUp(){
+    static void setAll(){
         Configuration.headless = true;
         Configuration.browser = "firefox";
         today = new GregorianCalendar();
@@ -28,22 +31,25 @@ public class CardDeliveryTest {
         formater = new SimpleDateFormat("dd.MM.yyyy");
     }
 
-    @Test
-    void shouldTest() {
+    @BeforeEach
+    void setUp(){
         open("http://localhost:9999/");
+    }
+
+    @Test
+    void shouldSuccessfulSendForm() {
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue(formater.format(date.getTime()));
         $("[data-test-id = 'name'] input").setValue("Петров Вася");
         $("[data-test-id = 'phone'] input").setValue("+79567891245");
         $("[data-test-id = 'agreement'] .checkbox__box").click();
         $(".button__content").click();
-
-        $("[data-test-id = 'notification']").waitUntil(Condition.cssClass("notification_visible"), 15_000);
+        $("[data-test-id = 'notification']").waitUntil(Condition.visible, 15_000);
+        //$("[data-test-id = 'notification']").waitUntil(Condition.cssClass("notification_visible"), 15_000);
     }
 
     @Test
     void shouldTestEmptyCity() {
-        open("http://localhost:9999/");
         $("[data-test-id = 'city'] input").setValue("");
         $(".button__content").click();
         $("[data-test-id = 'city'] .input__sub").shouldHave(Condition.exactText("Поле обязательно для заполнения"));
@@ -51,7 +57,6 @@ public class CardDeliveryTest {
 
     @Test
     void shouldTestWrongCity() {
-        open("http://localhost:9999/");
         $("[data-test-id = 'city'] input").setValue("Кань");
         $(".button__content").click();
         $("[data-test-id = 'city'] .input__sub").shouldHave(Condition.exactText("Доставка в выбранный город недоступна"));
@@ -59,7 +64,6 @@ public class CardDeliveryTest {
 
     @Test
     void shouldTestEmptyDate() {
-        open("http://localhost:9999/");
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue("");
         $(".button__content").click();
@@ -68,7 +72,6 @@ public class CardDeliveryTest {
 
     @Test
     void shouldTestWrongDate() {
-        open("http://localhost:9999/");
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue(formater.format(today.getTime()));
         $(".button__content").click();
@@ -77,7 +80,6 @@ public class CardDeliveryTest {
 
     @Test
     void shouldTestNonexistentDate() {
-        open("http://localhost:9999/");
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue("45.00.2021");
         $(".button__content").click();
@@ -86,18 +88,15 @@ public class CardDeliveryTest {
 
     @Test
     void shouldTestEmptyName() {
-        open("http://localhost:9999/");
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue(formater.format(date.getTime()));
         $("[data-test-id = 'name'] input").setValue("");
-
         $(".button__content").click();
         $("[data-test-id = 'name'] .input__sub").shouldHave(Condition.exactText("Поле обязательно для заполнения"));
     }
 
     @Test
     void shouldTestWrongName() {
-        open("http://localhost:9999/");
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue(formater.format(date.getTime()));
         $("[data-test-id = 'name'] input").setValue("Pertov Petr");
@@ -107,7 +106,6 @@ public class CardDeliveryTest {
 
     @Test
     void shouldTestEmptyPhone() {
-        open("http://localhost:9999/");
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue(formater.format(date.getTime()));
         $("[data-test-id = 'name'] input").setValue("Петров Олег");
@@ -118,7 +116,6 @@ public class CardDeliveryTest {
 
     @Test
     void shouldTestWrongPhone() {
-        open("http://localhost:9999/");
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue(formater.format(date.getTime()));
         $("[data-test-id = 'name'] input").setValue("Петров Олег");
@@ -129,7 +126,6 @@ public class CardDeliveryTest {
 
     @Test
     void shouldTestEmptyAgreement() {
-        open("http://localhost:9999/");
         $("[data-test-id = 'city'] input").setValue("Казань");
         $("[data-test-id = 'date'] input").setValue(formater.format(date.getTime()));
         $("[data-test-id = 'name'] input").setValue("Петров Олег");
